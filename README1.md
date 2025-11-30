@@ -1,49 +1,49 @@
 # Neural Network From Scratch (NumPy Only)
 ### Learning Log — 30 November 2025
 
-This repository documents the process of implementing a neural network entirely from scratch using NumPy and training it on the MNIST dataset. The log below contains a chronological record of everything attempted on 30 November 2025, including errors encountered, debugging steps, and lessons learned.
+This readme1 documents the process of implementing a neural network entirely from scratch using NumPy and training it on the MNIST dataset. The log below contains a chronological record of everything attempted on 30 November 2025, including errors encountered, debugging steps, and lessons learned.
 
 ---
 
 ## Learning Log (30 Nov 2025)
 
-**12:15 PM — Initial Setup**  
+**8:41 AM — Initial Setup**  
 Loaded MNIST using `mnist.load_data()`. Began implementing a 2-layer neural network (784 → hidden → 10). Did not fully understand the expected input shape `(features, samples)` at this stage.
 
-**12:25 PM — Understanding Reshaping**  
+**9:21 PM — Understanding Reshaping**  
 Encountered confusion with:  
 `X_train = X_train_raw.reshape(X_train_raw.shape[0], -1).T`  
 Learned that reshaping flattens each 28×28 image into 784 features, and the transpose ensures each column corresponds to one training example. Final shape: `(784, 60000)`. This clarified why neural network implementations use column-major sample layout.
 
-**12:40 PM — Normalization Error**  
+**10:27 PM — Normalization Error**  
 Error encountered:  
 `UFuncTypeError: Cannot cast ufunc 'divide' output from float64 to uint8`  
 Cause: MNIST loaded as `uint8`. Division by 255 attempted an invalid in-place cast.  
 Fix: Convert to float first:  
 `X_train = X_train.astype("float32") / 255.0`.
 
-**1:15 PM — Shape Mismatch in Forward Pass**  
+**1:16 PM — Shape Mismatch in Forward Pass**  
 Error:  
 `ValueError: shapes (10,784) and (10,60000) not aligned`  
 Cause: Incorrect weight matrix shape for the second layer. `W2` was constructed as `(10,784)` but should be `(10, hidden_dim)`. This clarified the necessity of consistent layer dimensioning.
 
-**1:30 PM — Unexpected Early Termination**  
+**1:48 PM — Unexpected Early Termination**  
 Training printed only iteration 0 and stopped without errors.  
 Diagnosis: The `return` statement in `gradient_descent` was placed inside the for-loop.  
 Fix: Moved the return statement outside the loop.
 
-**2:00 PM — Accuracy Stuck at ~0.11**  
+**2:42 PM — Accuracy Stuck at ~0.11**  
 Training consistently produced approximately 0.11 accuracy across all iterations.  
 Interpretation: The model was predicting a single class for all inputs. This indicated no useful gradient flow into the second layer. Root cause: Hidden layer too small (10 neurons), causing the model to collapse into a near-linear classifier unable to separate MNIST digits.
 
-**2:20 PM — Bias Initialization Insight**  
+**10:34 PM — Bias Initialization Insight**  
 Originally used random biases:  
 `b1 = np.random.randn(10,1)`  
 This caused many ReLU neurons to be inactive due to negative bias values.  
 Fix: Switched to zero biases:  
 `b1 = np.zeros((10,1))` and `b2 = np.zeros((10,1))`.
 
-**2:40 PM — Inspecting Hidden Layer Activation**  
+**11:29 PM — Inspecting Hidden Layer Activation**  
 Added debugging statements to inspect hidden layer output:  
 `A1 zero ratio`, `A1 mean`, `A1 shape`.  
 Results showed:  
@@ -51,7 +51,7 @@ Results showed:
 - A1 shape `(10, 60000)`  
 Conclusion: The hidden layer size of 10 was far too small to represent 784-dimensional input in a useful way.
 
-**3:00 PM — Reproducing Tutorial Conditions**  
+**12:03 AM(Dec 1) — Reproducing Tutorial Conditions**  
 Adjusted training conditions to match the YouTube tutorial being referenced:  
 - Hidden layer size: 10  
 - Zero biases  
