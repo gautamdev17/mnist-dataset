@@ -5,6 +5,8 @@ This readme1 documents the process of implementing a neural network entirely fro
 
 ---
 
+This was based on the tutorial posted by Samson Zhang,https://www.youtube.com/watch?v=w8yWXqWQYmU,Building a neural network FROM SCRATCH (no Tensorflow/Pytorch, just numpy & math)
+
 ## Learning Log (30 Nov 2025)
 
 **8:41 AM — Initial Setup**  
