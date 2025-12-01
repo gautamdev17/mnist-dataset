@@ -12,12 +12,12 @@ This was based on the tutorial posted by Samson Zhang,https://www.youtube.com/wa
 **8:41 AM — Initial Setup**  
 Loaded MNIST using `mnist.load_data()`. Began implementing a 2-layer neural network (784 → hidden → 10). Did not fully understand the expected input shape `(features, samples)` at this stage.
 
-**9:21 PM — Understanding Reshaping**  
+**9:21 AM — Understanding Reshaping**  
 Encountered confusion with:  
 `X_train = X_train_raw.reshape(X_train_raw.shape[0], -1).T`  
 Learned that reshaping flattens each 28×28 image into 784 features, and the transpose ensures each column corresponds to one training example. Final shape: `(784, 60000)`. This clarified why neural network implementations use column-major sample layout.
 
-**10:27 PM — Normalization Error**  
+**10:27 AM — Normalization Error**  
 Error encountered:  
 `UFuncTypeError: Cannot cast ufunc 'divide' output from float64 to uint8`  
 Cause: MNIST loaded as `uint8`. Division by 255 attempted an invalid in-place cast.  
