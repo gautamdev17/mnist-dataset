@@ -72,12 +72,32 @@ With these conditions, the model achieved approximately **96% accuracy**, confir
 
 ---
 
-## Final Result (Subset Training)
+## Final Result
 
 Using the tutorial architecture (hidden size = 10, zero biases) on the first 5000 MNIST samples for 300–500 iterations with a learning rate of 0.1 resulted in approximately **96% training accuracy**. This confirms that the full NumPy implementation of forward propagation, backpropagation, and parameter updates works correctly.
+Test result:- Test accuracy: 0.8655
 
 ---
+## Noteworthy tweaks and what i learned
 
+1. **Not scaling pixel values (0–255) → Accuracy ≈ 0.1126**  
+   Scaling inputs with `/ 255.0` dramatically improved learning.  
+   Unscaled inputs produced extremely large activations, unstable gradients, and the network collapsed to predicting a single class.  
+   After scaling inputs to the range 0–1, accuracy increased to **0.9602** on the 5k subset.
+
+2. **Changing training set size from 60k to 5k samples**
+   Smaller networks can only learn proportional info. 
+   Training on all 60,000 MNIST images with a very small hidden layer (10 neurons) resulted in accuracy ≈ 0.09–0.11.  
+   Reducing the training set to 5,000 samples allowed the small network to fit the simpler distribution and reach **~84% accuracy**, eventually **~96%** after more iterations.  
+   Lesson: small models can overfit small datasets but cannot learn the full MNIST distribution.
+
+4. **Initializing weights to zero → No learning**  
+   Setting `W1 = 0` (zero initialization) made every neuron in a layer compute the same output and receive identical gradients.  
+   This caused *symmetry breaking failure*, effectively reducing the network to a structure like `784 → 1 → 10` instead of `784 → 10 → 10`.  
+   With zero initialization, the network cannot learn at all.  
+   Proper random initialization (e.g., small Gaussian values) is required for learning.
+   
 ## Conclusion
 
 This project involved building every part of a neural network manually: forward pass, activations, softmax, cross-entropy loss, and backpropagation. The debugging process covered shape alignment, initialization issues, ReLU dynamics, and data preprocessing errors. The final working model demonstrates a full understanding of neural network internals and the importance of architectural choices.
+A larger ANN is recommended for mnist since it needs to capture features, preferabely 784->64->10, more hidden layers are recommended too, but train at your own risk!, overfitting may cause problems.
